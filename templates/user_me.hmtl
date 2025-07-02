@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>个人中心</title>
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" /> -->
+</head>
+<body>
+  <h1>个人中心</h1>
+  <nav>
+    <a href="/posts">信息墙</a> |
+    <a href="/post_item">发布信息</a> |
+    <a href="/logout">退出登录</a>
+  </nav>
+  <hr />
+
+  <h2>我发布的信息</h2>
+  {% if my_posts %}
+    <table border="1" cellpadding="5" cellspacing="0" width="100%">
+      <thead>
+        <tr>
+          <th>物品名称</th>
+          <th>类型</th>
+          <th>时间</th>
+          <th>地点</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in my_posts %}
+        <tr>
+          <td>{{ post.title }}</td>
+          <td>{{ post.type }}</td>
+          <td>{{ post.date }}</td>
+          <td>{{ post.location }}</td>
+          <td>{{ post.status }}</td>
+          <td>
+            <a href="/edit_post/{{ post.id }}">编辑</a> |
+            <a href="/delete_post/{{ post.id }}" onclick="return confirm('确定删除吗？')">删除</a>
+            {% if post.status != '已找回' %}
+              | <a href="/mark_found/{{ post.id }}">标记已找回</a>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>你还没有发布过任何信息。</p>
+  {% endif %}
+</body>
+</html>
